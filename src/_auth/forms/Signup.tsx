@@ -2,6 +2,9 @@ import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Link } from 'react-router-dom'
+import { createUserAccount } from '@/lib/appwrite/api'
+
+
 
 import { Button } from "@/components/ui/button"
 import {
@@ -24,7 +27,7 @@ function Signup() {
   const form = useForm<z.infer<typeof SignupVal>>({
     resolver: zodResolver(SignupVal),
     defaultValues: {
-      name:'',
+      name:"",
       username: "",
       email:"",
       password:"",
@@ -35,7 +38,8 @@ function Signup() {
  async function  onSubmit(values: z.infer<typeof SignupVal>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    const newUser=await createUserAccount(values)
+    console.log(newUser);
   }
   return (
    
@@ -48,62 +52,63 @@ function Signup() {
 
         
       <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col mt-4 gap-5 w-full'>
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input type='text' className='shad-input' placeholder='name' {...field} />
-              </FormControl>
-             
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-            <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>UserName</FormLabel>
-              <FormControl>
-                <Input type='text' className='shad-input' placeholder='username' {...field} />
-              </FormControl>
-             
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-            <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type='email' className='shad-input' placeholder='email' {...field} />
-              </FormControl>
-             
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-            <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type='password' className='shad-input' placeholder='at least 8 character' {...field} />
-              </FormControl>
-             
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <FormField
+  control={form.control}
+  name="name"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Name</FormLabel>
+      <FormControl>
+        <Input type='text' className='shad-input' placeholder='name' {...field} />
+      </FormControl>
+     
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+<FormField
+  control={form.control}
+  name="username"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>UserName</FormLabel>
+      <FormControl>
+        <Input type='text' className='shad-input' placeholder='username' {...field} />
+      </FormControl>
+     
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+<FormField
+  control={form.control}
+  name="email"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Email</FormLabel>
+      <FormControl>
+        <Input type='email' className='shad-input' placeholder='email' {...field} />
+      </FormControl>
+     
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+<FormField
+  control={form.control}
+  name="password"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Password</FormLabel>
+      <FormControl>
+        <Input type='password' className='shad-input' placeholder='at least 8 character' {...field} />
+      </FormControl>
+     
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
         <Button type="submit" className='shad-button_primary'>
 
           {isLoading?(
